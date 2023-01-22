@@ -1,0 +1,64 @@
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.slider {
+  margin-top: 50px;
+  position: absolute;
+
+}
+button {
+  border-radius: 50%;
+  border: none;
+
+}
+
+.bouton {
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+
+  
+}
+
+.mesBoutons {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+  margin: auto;
+  top:295px;
+  
+  
+}
+
+.container {
+  width: 400px;
+  margin:auto;
+}
+
+.container-dots {
+  position: absolute;
+  bottom: 165px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+.dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid black;
+  margin: 0 5px;
+  background: rgb(241, 239, 239);
+}
+.dot.active {
+  background: rgb(43, 42, 42);
+}
