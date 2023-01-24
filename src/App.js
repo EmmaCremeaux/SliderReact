@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Boutons from "./Components/Boutons";
 
@@ -21,42 +21,57 @@ const photos=[
   { id: 7, src:"/Photos/photo7.jpg", alt:"photo7" }
 ];
 
+//selectionne toute les radio
+const radios = document.getElementsByTagName("input");
+
+//cocher par defaut la premiere radio
+useEffect(() => {
+  if (radios) {
+    radios[0].checked = true;
+  }
+}, []);
 
 
-const [slide, setSlide] = useState(photos[0])
-
+const [slide, setSlide] = useState(photos[0]);
+const [isDisabled, setIsDisabled] = useState(false);
 
 // Comportements
-const nextSlide = () => {
-  
-  setTimeout(() => {
-    position ++
-  
-  if (position > photos.length - 1) {
-    position = 0
-  }
-  setSlide(photos[position])
-  }, 1000);
-  
-}
 
+
+const nextSlide = () => {
+  setIsDisabled(true);
+  if (position+1 > photos.length - 1) {
+    position = 0;
+  }
+  else {
+    position ++;
+  }
+  radios[position].checked = true;
+  setSlide(photos[position]);
+  setTimeout(() => { 
+    setIsDisabled(false); 
+  }, 1000);
+};
 
 const postSlide = () => {
-  setTimeout(() => {
-    position --
-  
-  if (position < 0) {
-    position = 6
-  } 
-  setSlide(photos[position])
+  setIsDisabled(true);
+  if (position - 1 < 0) {
+    position = 6;
+  } else {
+    position--;
+  }
+  radios[position].checked = true;
+  setSlide(photos[position]);
+  setTimeout(() => { 
+    setIsDisabled(false); 
   }, 1000);
-  
-}
+};
 
+const movePhoto = (photo) => {
+  setSlide(photos[photo.id-1]);
+  position = photo.id-1;
+};
 
-const movePhoto = position => {
-  setSlide(photos[position])
-}
 
 
 // Render
@@ -71,16 +86,22 @@ return (
       height="550"/>
 
     <div className="mesBoutons">  
-  <Boutons onClick={postSlide} direction = "fa-sharp fa-solid fa-arrow-left bouton"/>              
-  <Boutons onClick={nextSlide} direction = "fa-sharp fa-solid fa-arrow-right bouton" />
+  <Boutons disabled={isDisabled} onClick={postSlide} direction = "fa-sharp fa-solid fa-arrow-left bouton"/>              
+  <Boutons disabled={isDisabled} onClick={nextSlide} direction = "fa-sharp fa-solid fa-arrow-right bouton" />
 </div> 
            
     <div className="container-dots">
-      {Array.from({length: 7}).map((item, position) => (
-    <div onClick={() => movePhoto(position + 1)}
-        className={slide === position + 1 ? "dot active" : "dot"}>
+      {Array.from(photos).map((photo, position) => (
+    <input 
+            type="radio" 
+            name="image"
+            key={photo.id} 
+            value={position}
+            onClick={() => movePhoto(photo)}
+            className="dot">
+              
 
-    </div>
+    </input>
     ))}
     </div>
     </div>
